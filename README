@@ -3,3 +3,7 @@ similar to my typical GL wrappers
 depends on 
 	lua-ext
 	lua-template
+
+TODO
+- move the matrix4 functions to matrix/ffi.lua and just use that
+- then delete this repo and just use "ffi_OpenGL = 'ffi.OpenGLES2'"

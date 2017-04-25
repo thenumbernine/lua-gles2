@@ -8,6 +8,7 @@ local GLTex = class()
 local lookupWrap = {
 	s = gl.GL_TEXTURE_WRAP_S,
 	t = gl.GL_TEXTURE_WRAP_T,
+	r = gl.GL_TEXTURE_WRAP_R,
 }
 
 ffi.cdef[[
@@ -31,7 +32,7 @@ function GLTex:init(args)
 	else
 		args = table(args)
 	end
-	
+
 	-- redundant with id
 	-- but I need something ffi ctype to do a gc
 	-- for automatic glDeleteTextures
@@ -61,6 +62,9 @@ function GLTex:setWrap(wrap)
 		gl.glTexParameteri(self.target, k, v)
 	end
 end
+
+function GLTex:enable() gl.glEnable(self.target) end
+function GLTex:disable() gl.glDisable(self.target) end
 
 function GLTex:bind(unit)
 	if unit then
