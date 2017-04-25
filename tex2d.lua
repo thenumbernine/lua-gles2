@@ -1,7 +1,5 @@
 local ffi = require 'ffi'
 local gl = require 'ffi.OpenGLES2'
-local sdl = require 'ffi.sdl'
-local Image = require 'image'
 local class = require 'ext.class'
 local GLTex = require 'gles2.tex'
 
@@ -13,7 +11,6 @@ GLTex2D.target = gl.GL_TEXTURE_2D
 function GLTex2D:create(args)
 	self.width = args.width
 	self.height = args.height
-	--print(args.width,args.height,args.data)
 	gl.glTexImage2D(
 		args.target or self.target,
 		args.level or 0,
@@ -37,7 +34,19 @@ local function rupowoftwo(x)
 	return u
 end
 
-local ffi = require 'ffi'
+-- specific for my luajit-based image loader:
+local formatForChannels = {
+	[1] = gl.GL_LUMINANCE,
+	[3] = gl.GL_RGB,
+	[4] = gl.GL_RGBA,
+}
+local typeForType = {
+	['char'] = gl.GL_UNSIGNED_BYTE,
+	['signed char'] = gl.GL_UNSIGNED_BYTE,
+	['unsigned char'] = gl.GL_UNSIGNED_BYTE,
+}
+
+GLTex2D.resizeNPO2 = false
 function GLTex2D:load(args)
 	local image = args.image
 	if not image then
@@ -45,6 +54,7 @@ function GLTex2D:load(args)
 		if not filename then
 			error('GLTex2D:load expected image or filename')
 		end
+		local Image = require 'image'
 		image = Image(filename)
 	end
 	assert(image)
@@ -66,9 +76,9 @@ function GLTex2D:load(args)
 		w,h = nw,nh
 	end
 	args.width, args.height = w, h
-	args.internalFormat = gl.GL_RGBA
-	args.format = gl.GL_RGBA
-	args.type = gl.GL_UNSIGNED_BYTE
+	args.internalFormat = args.internalFormat or formatForChannels[image.channels]
+	args.format = args.format or formatForChannels[image.channels] or gl.GL_RGBA
+	args.type = args.type or typeForType[image.format] or gl.GL_UNSIGNED_BYTE
 	args.data = data 
 end
 
