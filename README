@@ -1,2 +1,5 @@
 GLES2 wrappers for Lua
 similar to my typical GL wrappers
+depends on 
+	lua-ext
+	lua-template
