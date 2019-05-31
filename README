@@ -5,5 +5,5 @@ depends on
 	lua-template
 
 TODO
-- move the matrix4 functions to matrix/ffi.lua and just use that
+- move the matrix4 functions to matrix/ffi.lua or somewhere else 
 - then delete this repo and just use "ffi_OpenGL = 'ffi.OpenGLES2'"
