@@ -1,5 +1,5 @@
 local ffi = require 'ffi'
-local gl = require 'ffi.OpenGLES2'
+local gl = require 'ffi.req' 'OpenGLES2'
 local class = require 'ext.class'
 local GLShader = require 'gles2.shader'
 
